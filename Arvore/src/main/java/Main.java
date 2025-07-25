@@ -9,6 +9,7 @@ public class Main {
         arvore.inserir(60);
         arvore.inserir(80);
         arvore.imprimirPreOrdem();
+        System.out.println("A Altura do Nó " + arvore.capturarNo(50).valor + " é "+arvore.altura(arvore.capturarNo(50)));
         arvore.imprimirEmOrdem();
         arvore.imprimirPosOrdem();
     }
