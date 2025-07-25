@@ -84,7 +84,7 @@ public class ArvoreBinaria {
 
     public void imprimirPreOrdem() {
         imprimirPreOrdemRecursivo(raiz);
-        System.out.println(); // Para pular a linha após a impressão
+        System.out.println(); 
     }
 
     private void imprimirPreOrdemRecursivo(No noAtual) {
@@ -97,7 +97,7 @@ public class ArvoreBinaria {
 
     public void imprimirPosOrdem() {
         imprimirPosOrdemRecursivo(raiz);
-        System.out.println(); // Para pular a linha após a impressão
+        System.out.println();
     }
 
     private void imprimirPosOrdemRecursivo(No noAtual) {
@@ -109,7 +109,7 @@ public class ArvoreBinaria {
     }
     public void imprimirEmOrdem() {
         imprimirEmOrdemRecursivo(raiz);
-        System.out.println(); // Para pular a linha após a impressão
+        System.out.println();
     }
 
     private void imprimirEmOrdemRecursivo(No noAtual) {
