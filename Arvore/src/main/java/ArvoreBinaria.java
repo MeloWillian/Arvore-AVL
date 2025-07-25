@@ -34,6 +34,21 @@ public class ArvoreBinaria {
         }
     }
 
+    public No capturarNo(int valor) {
+        return capturarNoRecursivo(raiz, valor);
+    }
+
+    private No capturarNoRecursivo(No noAtual, int valor) {
+        if (noAtual == null) return null;
+        if (valor == noAtual.valor) return noAtual;
+
+        if (valor < noAtual.valor) {
+            return capturarNoRecursivo(noAtual.filhoEsquerdo, valor);
+        } else {
+            return capturarNoRecursivo(noAtual.filhoDireito, valor);
+        }
+    }
+
     public void remover(int valor) {
         raiz = removerRecursivo(raiz, valor);
     }
@@ -103,5 +118,13 @@ public class ArvoreBinaria {
             System.out.print(noAtual.valor + " ");
             imprimirEmOrdemRecursivo(noAtual.filhoDireito);
         }
+    }
+    public int altura(No noAtual){
+        int esq =-1;
+        int dir = -1;
+        if(noAtual == null) return -1;
+        esq = altura(noAtual.filhoEsquerdo);
+        dir = altura(noAtual.filhoDireito);
+        return Math.max(esq,dir) + 1;
     }
 }
