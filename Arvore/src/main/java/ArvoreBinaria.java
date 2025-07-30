@@ -130,4 +130,21 @@ public class ArvoreBinaria {
     public int fatorBalanceamento(No noAtual){
         return altura(noAtual.getFilhoEsquerdo()) - altura(noAtual.getFilhoDireito());
     }
+    public No rotacaoDireita(No noAtual){
+        No apontadorEsquerdo = noAtual.getFilhoEsquerdo();
+        No apontadorDireitoDoFilho = apontadorEsquerdo.getFilhoDireito();
+        
+        apontadorEsquerdo.setFilhoDireito(noAtual);
+        noAtual.setFilhoEsquerdo(apontadorDireitoDoFilho);
+        return apontadorEsquerdo;
+    }
+    public No rotacaoEsquerda(No noAtual){
+        No apontadorDireito = noAtual.getFilhoDireito(); 
+        No apontadorEsquerdoDoFilho = apontadorDireito.getFilhoEsquerdo(); 
+
+        apontadorDireito.setFilhoEsquerdo(noAtual);
+        noAtual.setFilhoDireito(apontadorEsquerdoDoFilho);
+        
+        return apontadorDireito;
+    }
 }
