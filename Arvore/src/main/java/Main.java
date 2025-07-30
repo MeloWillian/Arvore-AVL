@@ -12,6 +12,6 @@ public class Main {
         System.out.println("A Altura do Nó " + arvore.capturarNo(50).valor + " é "+arvore.altura(arvore.capturarNo(50)));
         arvore.imprimirEmOrdem();
         arvore.imprimirPosOrdem();
+        System.out.println("Fator de Balanceamento do Nó "+ arvore.capturarNo(50).getValor() + " é "+arvore.fatorBalanceamento(arvore.capturarNo(50)));
     }
 }
-
