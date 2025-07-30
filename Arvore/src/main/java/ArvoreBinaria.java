@@ -127,4 +127,7 @@ public class ArvoreBinaria {
         int dir = altura(noAtual.getFilhoDireito());
         return Math.max(esq, dir) + 1;
     }
+    public int fatorBalanceamento(No noAtual){
+        return altura(noAtual.getFilhoEsquerdo()) - altura(noAtual.getFilhoDireito());
+    }
 }
