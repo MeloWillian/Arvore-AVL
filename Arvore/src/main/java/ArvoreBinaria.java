@@ -10,10 +10,10 @@ public class ArvoreBinaria {
             return new No(valor);
         }
 
-        if (valor < noAtual.valor) {
-            noAtual.filhoEsquerdo = inserirRecursivo(noAtual.filhoEsquerdo, valor);
-        } else if (valor > noAtual.valor) {
-            noAtual.filhoDireito = inserirRecursivo(noAtual.filhoDireito, valor);
+        if (valor < noAtual.getValor()) {
+            noAtual.setFilhoEsquerdo(inserirRecursivo(noAtual.getFilhoEsquerdo(), valor));
+        } else if (valor > noAtual.getValor()) {
+            noAtual.setFilhoDireito(inserirRecursivo(noAtual.getFilhoDireito(), valor));
         }
 
         return noAtual;
@@ -25,12 +25,12 @@ public class ArvoreBinaria {
 
     private boolean buscarRecursivo(No noAtual, int valor) {
         if (noAtual == null) return false;
-        if (valor == noAtual.valor) return true;
+        if (valor == noAtual.getValor()) return true;
 
-        if (valor < noAtual.valor) {
-            return buscarRecursivo(noAtual.filhoEsquerdo, valor);
+        if (valor < noAtual.getValor()) {
+            return buscarRecursivo(noAtual.getFilhoEsquerdo(), valor);
         } else {
-            return buscarRecursivo(noAtual.filhoDireito, valor);
+            return buscarRecursivo(noAtual.getFilhoDireito(), valor);
         }
     }
 
@@ -40,12 +40,12 @@ public class ArvoreBinaria {
 
     private No capturarNoRecursivo(No noAtual, int valor) {
         if (noAtual == null) return null;
-        if (valor == noAtual.valor) return noAtual;
+        if (valor == noAtual.getValor()) return noAtual;
 
-        if (valor < noAtual.valor) {
-            return capturarNoRecursivo(noAtual.filhoEsquerdo, valor);
+        if (valor < noAtual.getValor()) {
+            return capturarNoRecursivo(noAtual.getFilhoEsquerdo(), valor);
         } else {
-            return capturarNoRecursivo(noAtual.filhoDireito, valor);
+            return capturarNoRecursivo(noAtual.getFilhoDireito(), valor);
         }
     }
 
@@ -56,42 +56,42 @@ public class ArvoreBinaria {
     private No removerRecursivo(No noAtual, int valor) {
         if (noAtual == null) return null;
 
-        if (valor < noAtual.valor) {
-            noAtual.filhoEsquerdo = removerRecursivo(noAtual.filhoEsquerdo, valor);
-        } else if (valor > noAtual.valor) {
-            noAtual.filhoDireito = removerRecursivo(noAtual.filhoDireito, valor);
+        if (valor < noAtual.getValor()) {
+            noAtual.setFilhoEsquerdo(removerRecursivo(noAtual.getFilhoEsquerdo(), valor));
+        } else if (valor > noAtual.getValor()) {
+            noAtual.setFilhoDireito(removerRecursivo(noAtual.getFilhoDireito(), valor));
         } else {
-            if (noAtual.filhoEsquerdo == null) {
-                return noAtual.filhoDireito;
+            if (noAtual.getFilhoEsquerdo() == null) {
+                return noAtual.getFilhoDireito();
             }
-            if (noAtual.filhoDireito == null) {
-                return noAtual.filhoEsquerdo;
+            if (noAtual.getFilhoDireito() == null) {
+                return noAtual.getFilhoEsquerdo();
             }
 
-            noAtual.valor = encontrarMenorValor(noAtual.filhoDireito);
-            noAtual.filhoDireito = removerRecursivo(noAtual.filhoDireito, noAtual.valor);
+            noAtual.setValor(encontrarMenorValor(noAtual.getFilhoDireito()));
+            noAtual.setFilhoDireito(removerRecursivo(noAtual.getFilhoDireito(), noAtual.getValor()));
         }
 
         return noAtual;
     }
 
     private int encontrarMenorValor(No noAtual) {
-        while (noAtual.filhoEsquerdo != null) {
-            noAtual = noAtual.filhoEsquerdo;
+        while (noAtual.getFilhoEsquerdo() != null) {
+            noAtual = noAtual.getFilhoEsquerdo();
         }
-        return noAtual.valor;
+        return noAtual.getValor();
     }
 
     public void imprimirPreOrdem() {
         imprimirPreOrdemRecursivo(raiz);
-        System.out.println(); 
+        System.out.println();
     }
 
     private void imprimirPreOrdemRecursivo(No noAtual) {
         if (noAtual != null) {
-            System.out.print(noAtual.valor + " ");
-            imprimirPreOrdemRecursivo(noAtual.filhoEsquerdo);
-            imprimirPreOrdemRecursivo(noAtual.filhoDireito);
+            System.out.print(noAtual.getValor() + " ");
+            imprimirPreOrdemRecursivo(noAtual.getFilhoEsquerdo());
+            imprimirPreOrdemRecursivo(noAtual.getFilhoDireito());
         }
     }
 
@@ -102,11 +102,12 @@ public class ArvoreBinaria {
 
     private void imprimirPosOrdemRecursivo(No noAtual) {
         if (noAtual != null) {
-            imprimirPosOrdemRecursivo(noAtual.filhoEsquerdo);
-            imprimirPosOrdemRecursivo(noAtual.filhoDireito);
-            System.out.print(noAtual.valor + " ");
+            imprimirPosOrdemRecursivo(noAtual.getFilhoEsquerdo());
+            imprimirPosOrdemRecursivo(noAtual.getFilhoDireito());
+            System.out.print(noAtual.getValor() + " ");
         }
     }
+
     public void imprimirEmOrdem() {
         imprimirEmOrdemRecursivo(raiz);
         System.out.println();
@@ -114,17 +115,16 @@ public class ArvoreBinaria {
 
     private void imprimirEmOrdemRecursivo(No noAtual) {
         if (noAtual != null) {
-            imprimirEmOrdemRecursivo(noAtual.filhoEsquerdo);
-            System.out.print(noAtual.valor + " ");
-            imprimirEmOrdemRecursivo(noAtual.filhoDireito);
+            imprimirEmOrdemRecursivo(noAtual.getFilhoEsquerdo());
+            System.out.print(noAtual.getValor() + " ");
+            imprimirEmOrdemRecursivo(noAtual.getFilhoDireito());
         }
     }
-    public int altura(No noAtual){
-        int esq =-1;
-        int dir = -1;
-        if(noAtual == null) return -1;
-        esq = altura(noAtual.filhoEsquerdo);
-        dir = altura(noAtual.filhoDireito);
-        return Math.max(esq,dir) + 1;
+
+    public int altura(No noAtual) {
+        if (noAtual == null) return -1;
+        int esq = altura(noAtual.getFilhoEsquerdo());
+        int dir = altura(noAtual.getFilhoDireito());
+        return Math.max(esq, dir) + 1;
     }
 }
