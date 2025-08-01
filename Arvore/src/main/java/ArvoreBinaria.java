@@ -1,51 +1,36 @@
 public class ArvoreBinaria {
-    private No raiz = null;
+    public No raiz = null;
 
     public void inserir(int valor) {
         raiz = inserirRecursivo(raiz, valor);
     }
 
     private No inserirRecursivo(No noAtual, int valor) {
-        if (noAtual == null) {
-            return new No(valor);
-        }
+        if (noAtual == null) return new No(valor);
 
         if (valor < noAtual.getValor()) {
             noAtual.setFilhoEsquerdo(inserirRecursivo(noAtual.getFilhoEsquerdo(), valor));
         } else if (valor > noAtual.getValor()) {
             noAtual.setFilhoDireito(inserirRecursivo(noAtual.getFilhoDireito(), valor));
+        } else {
+            return noAtual; // valores duplicados não são inseridos
         }
 
-        return noAtual;
+        return balancear(noAtual);
     }
 
-    public boolean buscar(int valor) {
+    public No buscar(int valor) {
         return buscarRecursivo(raiz, valor);
     }
 
-    private boolean buscarRecursivo(No noAtual, int valor) {
-        if (noAtual == null) return false;
-        if (valor == noAtual.getValor()) return true;
+    private No buscarRecursivo(No noAtual, int valor) {
+        if (noAtual == null) return null;
+        if (valor == noAtual.getValor()) return noAtual;
 
         if (valor < noAtual.getValor()) {
             return buscarRecursivo(noAtual.getFilhoEsquerdo(), valor);
         } else {
             return buscarRecursivo(noAtual.getFilhoDireito(), valor);
-        }
-    }
-
-    public No capturarNo(int valor) {
-        return capturarNoRecursivo(raiz, valor);
-    }
-
-    private No capturarNoRecursivo(No noAtual, int valor) {
-        if (noAtual == null) return null;
-        if (valor == noAtual.getValor()) return noAtual;
-
-        if (valor < noAtual.getValor()) {
-            return capturarNoRecursivo(noAtual.getFilhoEsquerdo(), valor);
-        } else {
-            return capturarNoRecursivo(noAtual.getFilhoDireito(), valor);
         }
     }
 
@@ -61,18 +46,15 @@ public class ArvoreBinaria {
         } else if (valor > noAtual.getValor()) {
             noAtual.setFilhoDireito(removerRecursivo(noAtual.getFilhoDireito(), valor));
         } else {
-            if (noAtual.getFilhoEsquerdo() == null) {
-                return noAtual.getFilhoDireito();
-            }
-            if (noAtual.getFilhoDireito() == null) {
-                return noAtual.getFilhoEsquerdo();
-            }
+            if (noAtual.getFilhoEsquerdo() == null) return noAtual.getFilhoDireito();
+            if (noAtual.getFilhoDireito() == null) return noAtual.getFilhoEsquerdo();
 
-            noAtual.setValor(encontrarMenorValor(noAtual.getFilhoDireito()));
-            noAtual.setFilhoDireito(removerRecursivo(noAtual.getFilhoDireito(), noAtual.getValor()));
+            int menorValor = encontrarMenorValor(noAtual.getFilhoDireito());
+            noAtual.setValor(menorValor);
+            noAtual.setFilhoDireito(removerRecursivo(noAtual.getFilhoDireito(), menorValor));
         }
 
-        return noAtual;
+        return balancear(noAtual);
     }
 
     private int encontrarMenorValor(No noAtual) {
@@ -127,24 +109,57 @@ public class ArvoreBinaria {
         int dir = altura(noAtual.getFilhoDireito());
         return Math.max(esq, dir) + 1;
     }
-    public int fatorBalanceamento(No noAtual){
+
+    private int fatorBalanceamento(No noAtual) {
+        if (noAtual == null) return 0;
         return altura(noAtual.getFilhoEsquerdo()) - altura(noAtual.getFilhoDireito());
     }
-    public No rotacaoDireita(No noAtual){
+
+    public No rotacaoDireita(No noAtual) {
         No apontadorEsquerdo = noAtual.getFilhoEsquerdo();
         No apontadorDireitoDoFilho = apontadorEsquerdo.getFilhoDireito();
-        
+
         apontadorEsquerdo.setFilhoDireito(noAtual);
         noAtual.setFilhoEsquerdo(apontadorDireitoDoFilho);
+
         return apontadorEsquerdo;
     }
-    public No rotacaoEsquerda(No noAtual){
-        No apontadorDireito = noAtual.getFilhoDireito(); 
-        No apontadorEsquerdoDoFilho = apontadorDireito.getFilhoEsquerdo(); 
+
+    public No rotacaoEsquerda(No noAtual) {
+        No apontadorDireito = noAtual.getFilhoDireito();
+        No apontadorEsquerdoDoFilho = apontadorDireito.getFilhoEsquerdo();
 
         apontadorDireito.setFilhoEsquerdo(noAtual);
         noAtual.setFilhoDireito(apontadorEsquerdoDoFilho);
-        
+
         return apontadorDireito;
+    }
+
+    public No balancear(No noAtual) {
+        int fb = fatorBalanceamento(noAtual);
+
+        if (fb > 1) {
+            if (fatorBalanceamento(noAtual.getFilhoEsquerdo()) < 0) {
+                noAtual.setFilhoEsquerdo(rotacaoEsquerda(noAtual.getFilhoEsquerdo())); // Caso LR
+            }
+            return rotacaoDireita(noAtual); // Caso LL
+        }
+
+        if (fb < -1) {
+            if (fatorBalanceamento(noAtual.getFilhoDireito()) > 0) {
+                noAtual.setFilhoDireito(rotacaoDireita(noAtual.getFilhoDireito())); // Caso RL
+            }
+            return rotacaoEsquerda(noAtual); // Caso RR
+        }
+
+        return noAtual; // já está balanceado
+    }
+    public static void mostrarFator(ArvoreBinaria arvore, int valor) {
+        No no = arvore.buscar(valor);
+        if (no != null) {
+            System.out.printf("FB de %d: %d\n", valor, arvore.fatorBalanceamento(no));
+        } else {
+            System.out.printf("Nó %d não encontrado.\n", valor);
+        }
     }
 }
